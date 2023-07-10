@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Input and Search</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Array to store the submitted data
+            var data = [];
+
+            // Submit form data
+            $('#dataForm').submit(function(event) {
+                event.preventDefault();
+                var name = $('#name').val();
+                var age = $('#age').val();
+                var email = $('#email').val();
+                var phone = $('#phone').val();
+                var address = $('#address').val();
+                var entry = { name: name, age: age, email: email, phone: phone, address: address };
+                data.push(entry);
+
+                // Clear input fields
+                $('#name').val('');
+                $('#age').val('');
+                $('#email').val('');
+                $('#phone').val('');
+                $('#address').val('');
+
+                console.log('Data stored:', data);
+            });
+
+            // Search data
+            $('#searchForm').submit(function(event) {
+                event.preventDefault();
+                var searchTerm = $('#searchTerm').val();
+                var searchResults = [];
+
+                // Clear search results
+                $('#searchResults').empty();
+
+                // Search data
+                for (var i = 0; i < data.length; i++) {
+                    var entry = data[i];
+                    if (entry.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        entry.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        entry.phone.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        searchResults.push(entry);
+                    }
+                }
+
+                displaySearchResults(searchResults);
+            });
+
+            // Display search results on the page
+            function displaySearchResults(results) {
+                var searchResultsDiv = $('#searchResults');
+                searchResultsDiv.empty();
+
+                if (results.length === 0) {
+                    searchResultsDiv.append('<p>No results found.</p>');
+                } else {
+                    for (var i = 0; i < results.length; i++) {
+                        var result = results[i];
+                        searchResultsDiv.append('<p>Name: ' + result.name + ', Age: ' + result.age + ', Email: ' + result.email + ', Phone: ' + result.phone + ', Address: ' + result.address + '</p>');
+                    }
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>SRIKANTH DATA MODULE</h1>
+
+    <h2>Input Data</h2>
+    <form id="dataForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+        <br>
+        <label for="age">Age:</label>
+        <input type="number" id="age" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <br>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" required>
+        <br>
+        <label for="address">Address:</label>
+        <textarea id="address" required></textarea>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Search Data</h2>
+    <form id="searchForm">
+        <label for="searchTerm">Search Term:</label>
+        <input type="text" id="searchTerm" required>
+        <br>
+        <input type="submit" value="Search">
+    </form>
+
+    <h2>Search Results</h2>
+    <div id="searchResults"></div>
+</body>
+</html>
